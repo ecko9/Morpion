@@ -9,5 +9,7 @@ require_relative 'views/plateau_display.rb'
 
 ########################################
 
-obj = Game.new()
+p1 = Player.new()
+p2 = Player.new()
+obj = Game.new(p1, p2)
 

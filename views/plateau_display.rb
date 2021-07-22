@@ -38,9 +38,9 @@ class PlateauDisplay
   ####### PLATEAU TOP (AFFICHAGE COLONNES)
   def plateau_top(plateau)
     
-    puts "        |                    |                    |                    |"
-    puts "        |         1          |         2          |         3          |"
-    puts "        |____________________|____________________|____________________|"
+    puts "           |                    |                    |                    |"
+    puts "           |         1          |         2          |         3          |"
+    puts "   ________|____________________|____________________|____________________|"
     
   end
 
@@ -49,11 +49,11 @@ class PlateauDisplay
   def plateau_lines(plateau)
     char = 65
     plateau.each do |line|
-      puts "        |                    |                    |                    |"
-      puts "        |                    |                    |                    |"
-      puts "   #{char.chr}    |         #{symbolizer(line)[0]}          |         #{symbolizer(line)[1]}          |         #{symbolizer(line)[2]}          |"
-      puts "        |                    |                    |                    |"
-      puts "        |____________________|____________________|____________________|"
+      puts "           |                    |                    |                    |"
+      puts "           |                    |                    |                    |"
+      puts "     #{char.chr}     |         #{symbolizer(line)[0]}          |         #{symbolizer(line)[1]}          |         #{symbolizer(line)[2]}          |"
+      puts "           |                    |                    |                    |"
+      puts "   ________|____________________|____________________|____________________|"
       char += 1
     end
   end

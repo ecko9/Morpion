@@ -15,8 +15,8 @@ class Game
   #attr_accessor :var, :var2
 
   ########################################
-  def initialize()
-    perform
+  def initialize(joueur1, joueur2)
+    perform(joueur1, joueur2)
   end
 
 
@@ -24,7 +24,7 @@ class Game
   ####### TOUR JOUEUR
   def tour_joueur(player, plateau)
     puts ""
-    puts "Choisi une case où placer ton symbole (ex: A2)"
+    puts "                                CHOISI UNE CASE (EX: A2)"
     print "> "
     input_raw = gets.chomp.to_s
     ascii_letter1 = input_raw[0].ord.to_i
@@ -33,16 +33,16 @@ class Game
       y = ascii_letter1 - 65
       x = ascii_letter2 - 1
       if  plateau[y][x] == 0 ||  plateau[y][x] == 1
-        puts "ERREUR : Vérifiez vos coordonnées !"
-        puts "> Un Symbole existe déja à cet emplacement..."
+        puts "                            ERREUR : MAUVAISES COORDONNEES !"
+        puts "                    > Un Symbole existe déja à cet emplacement..."
         tour_joueur(player, plateau)
       else
         plateau[y][x] = player.symbol
       end
     else
-      puts "ERREUR : Vérifiez vos coordonnées !"
-      puts "> Une lettre Majuscule entre A et C pour les lignes..."
-      puts "> Un chiffre compris entre 1 et 3 pour les collones..."
+      puts "                              ERREUR : MAUVAISES COORDONNEES !"
+      puts "                     > Une lettre Majuscule entre A et C pour les lignes..."
+      puts "                     > Un chiffre compris entre 1 et 3 pour les collones..."
       tour_joueur(player, plateau)
     end
   end
@@ -115,56 +115,137 @@ class Game
   end
 
   ########################################
+  ####### CHECK EQUALITY
+  def is_equality?(plateau)
+    count = 0
+    plateau.each do |line|
+      line.each do |col|
+        if col == 9
+          count += 1
+        end
+      end
+    end
+    if count == 0
+      return true
+    else 
+      return false
+    end
+  end
+
+  ########################################
   ####### TOURS DE JEU
   def turns(plateau, p1, p2)
+    puts ""
+    puts ""
     PlateauDisplay.new(plateau)
+    puts ""
+    puts ""
     while is_a_winner?(plateau) != true
 
       puts ""
-      puts "A ton tour #{p1.name} :"
+      puts "                                  >>>#{" " * (6 - (p1.name.length / 2))}#{p1.name}#{" " * (6 - (p1.name.length / 2))}<<<"
+      puts "                                   >>      0      <<"
       tour_joueur(p1, plateau)
       PlateauDisplay.new(plateau)
+      puts ""
+      puts ""
       if is_a_winner?(plateau)
-        puts "Felicitation #{p1.name}"
+        puts "                  FELICITATION #{p1.name}, VOUS REMPORTEZ LA PARTIE !"
         p1.victories += 1
         break
       end
 
+      if is_equality?(plateau)
+        puts "                                      EGALITE"
+        break
+      end
+
       puts ""
-      puts "A ton tour #{p2.name} :"
+      puts "                                  >>>#{" " * (6 - (p2.name.length / 2))}#{p2.name}#{" " * (6 - (p2.name.length / 2))}<<<"
+      puts "                                   >>      X      <<"
       tour_joueur(p2, plateau)
+      puts ""
+      puts ""
       PlateauDisplay.new(plateau)
+      puts ""
+      puts ""
       if is_a_winner?(plateau)
-        puts "Felicitation #{p2.name}"
+        puts "                  FELICITATION #{p2.name}, VOUS REMPORTEZ LA PARTIE !"
         p2.victories += 1
         break
       end
 
     end
-    puts "Partie terminée"
+    end_screen(p1, p2)
   end
 
+
+  ########################################
+  ####### REJOUER ?
+  def replay(p1, p2)
+    puts ""
+    puts "                                 REJOUER UNE PARTIE ?"
+    puts "                                       (Y / N)"
+    print "> "
+    input = gets.chomp.to_s
+    if input == "Y"
+      perform(p1, p2)
+    elsif input == "N"
+      puts "                                A BIENTOT SUR MORPION !"
+    else
+      puts "                    ERREUR DE SAISIE : 'Y' pour OUI / 'N' pour NON"
+      replay(p1, p2)
+    end
+  end
+
+  ########################################
+  ####### END SCREEN
+  def end_screen(p1, p2)
+    puts ""
+    puts "                              -------------------------                  "
+    puts "                              -------------------------                  "
+    puts "                                         \\ /                             "
+    puts "                                      GAME OVER                          "
+    puts "                                         / \\                             "
+    puts "                              -------------------------                  "
+    puts "                              -------------------------                  "
+    puts ""
+    puts "                                      VICTOIRES"
+    puts ""
+    puts "                               #{p1.name}#{" " * (20 - p1.name.length)}#{p2.name}"
+    puts "                       _________________________________________ "
+    puts "                      |                    |                    |"
+    puts "                      |         #{p1.victories}#{" " * (11 - p1.victories.to_s.length)}|         #{p2.victories}#{" " * (11 - p2.victories.to_s.length)}|"
+    puts "                      |____________________|____________________|"
+    puts ""
+    puts ""
+    replay(p1, p2)
+  end
 
   ########################################
   ####### START SCREEN
   def start_screen
     puts ""
-    puts "                                        -------------------------                   "
-    puts "                                        -------------------------                   "
-    puts "                                                   \\ /                             "
-    puts "                                                 MORPION                            "
-    puts "                                                   / \\                             "
-    puts "                                        -------------------------                   "
-    puts "                                        -------------------------                   "
+    puts ""
+    puts ""
+    puts "                              -------------------------                   "
+    puts "                              -------------------------                   "
+    puts "                                         \\ /                             "
+    puts "                                       MORPION                            "
+    puts "                                         / \\                             "
+    puts "                              -------------------------                   "
+    puts "                              -------------------------                   "
+    puts ""
+    puts ""
+    puts "                          APPUYER SUR UNE TOUCHE POUR COMMENCER"
+    gets.chomp.to_s
   end
 
   ########################################
   ########################################
   ####### PERFORM
-  def perform
+  def perform(p1, p2)
     start_screen
-    p1 = Player.new()
-    p2 = Player.new()
     plateau = Plateau.new().array
     turns(plateau, p1, p2)
   end

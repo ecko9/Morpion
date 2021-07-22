@@ -22,9 +22,10 @@ class Player
     ####### GET_PLAYER_NAME
     def get_player_name
       puts ""
-      puts "Bonjour, veuillez choisir votre Nom de Joueur :"
+      puts "                                      BONJOUR"
+      puts "                               VEUILLEZ SAISIR UN NOM"
       puts ""
-      print "> "
+      print "                                     > "
       nom = gets.chomp.to_s
       puts ""
       return nom
@@ -34,9 +35,16 @@ class Player
     ########################################
     ####### GET_PLAYER_SYMBOL
     def get_player_symbol
+      puts ""
       if @@array_players.empty?
+        puts "                              VOTRE SYMBOLE EST LE ROND"
+        puts "                                   >>>    0    <<<"
+        puts ""
         return 0
       else
+        puts "                              VOTRE SYMBOLE EST LA CROIX"
+        puts "                                   >>>    X    <<<"
+        puts ""
         return 1
       end
     end
