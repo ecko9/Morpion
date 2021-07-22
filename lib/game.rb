@@ -41,8 +41,8 @@ class Game
       end
     else
       puts "                              ERREUR : MAUVAISES COORDONNEES !"
-      puts "                     > Une lettre Majuscule entre A et C pour les lignes..."
-      puts "                     > Un chiffre compris entre 1 et 3 pour les collones..."
+      puts "                    > Une lettre Majuscule entre A et C pour les lignes..."
+      puts "                    > Un chiffre compris entre 1 et 3 pour les collones..."
       tour_joueur(player, plateau)
     end
   end
@@ -146,16 +146,20 @@ class Game
       puts "                                  >>>#{" " * (6 - (p1.name.length / 2))}#{p1.name}#{" " * (6 - (p1.name.length / 2))}<<<"
       puts "                                   >>      0      <<"
       tour_joueur(p1, plateau)
+      system "clear"
       PlateauDisplay.new(plateau)
       puts ""
       puts ""
       if is_a_winner?(plateau)
+        puts ""
+        puts ""
         puts "                  FELICITATION #{p1.name}, VOUS REMPORTEZ LA PARTIE !"
         p1.victories += 1
         break
       end
-
       if is_equality?(plateau)
+        puts ""
+        puts ""
         puts "                                      EGALITE"
         break
       end
@@ -164,14 +168,21 @@ class Game
       puts "                                  >>>#{" " * (6 - (p2.name.length / 2))}#{p2.name}#{" " * (6 - (p2.name.length / 2))}<<<"
       puts "                                   >>      X      <<"
       tour_joueur(p2, plateau)
-      puts ""
-      puts ""
+      system "clear"
       PlateauDisplay.new(plateau)
       puts ""
       puts ""
       if is_a_winner?(plateau)
+        puts ""
+        puts ""
         puts "                  FELICITATION #{p2.name}, VOUS REMPORTEZ LA PARTIE !"
         p2.victories += 1
+        break
+      end
+      if is_equality?(plateau)
+        puts ""
+        puts ""
+        puts "                                      EGALITE"
         break
       end
 
@@ -184,6 +195,7 @@ class Game
   ####### REJOUER ?
   def replay(p1, p2)
     puts ""
+    puts ""
     puts "                                 REJOUER UNE PARTIE ?"
     puts "                                       (Y / N)"
     print "> "
@@ -193,6 +205,7 @@ class Game
     elsif input == "N"
       puts "                                A BIENTOT SUR MORPION !"
     else
+      system "clear"
       puts "                    ERREUR DE SAISIE : 'Y' pour OUI / 'N' pour NON"
       replay(p1, p2)
     end
@@ -246,6 +259,7 @@ class Game
   ####### PERFORM
   def perform(p1, p2)
     start_screen
+    system "clear"
     plateau = Plateau.new().array
     turns(plateau, p1, p2)
   end
